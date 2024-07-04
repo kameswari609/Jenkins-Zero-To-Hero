@@ -1,11 +1,11 @@
 pipeline {
-  agent {
-    docker {
+  agent any 
+     environment  {
       registry = "aparnamantravadi/maven-aparna-docker-agent" 
-4     REGISTRY_CREDENTIALS = credentials('docker-cred')
+     REGISTRY_CREDENTIALS = credentials('docker-cred')
       dockerImage = '' 
     }
-  }
+  
   stages {
     stage('Checkout') {
       steps {
