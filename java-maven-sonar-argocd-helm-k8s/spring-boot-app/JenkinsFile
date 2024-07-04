@@ -1,9 +1,9 @@
 pipeline {
   agent {
     docker {
-      
-      image 'aparnamantravadi/maven-aparna-docker-agent:v1'
-      args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
+      registry = "aparnamantravadi/maven-aparna-docker-agent" 
+4     REGISTRY_CREDENTIALS = credentials('docker-cred')
+      dockerImage = '' 
     }
   }
   stages {
@@ -22,7 +22,7 @@ pipeline {
     }
     stage('Static Code Analysis') {
       environment {
-        SONAR_URL = "http://3.85.175.120:9000"
+        SONAR_URL = "http://52.86.240.219:9000"
       }
       steps {
         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
@@ -32,7 +32,7 @@ pipeline {
     }
     stage('Build and Push Docker Image') {
       environment {
-        DOCKER_IMAGE = "aparnamk/ultimate-cicd:${BUILD_NUMBER}"
+        DOCKER_IMAGE = "aparnamantravadi/ultimate-cicd:${BUILD_NUMBER}"
         // DOCKERFILE_LOCATION = "java-maven-sonar-argocd-helm-k8s/spring-boot-app/Dockerfile"
         REGISTRY_CREDENTIALS = credentials('docker-cred')
       }
